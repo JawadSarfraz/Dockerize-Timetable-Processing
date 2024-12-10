@@ -15,21 +15,25 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/", methods=["GET", "POST"])
 def upload_file():
+    """
+    Handles file uploads, allows format selection, and processes teachers' data.
+    """
     if request.method == "POST":
+        # Get form data
         timetable_format = request.form.get("format")
         file = request.files.get("file")
 
+        # Validate inputs
         if not file or not timetable_format:
             return "Please select a file and format.", 400
-
         if not file.filename.endswith(".xml"):
             return "Only XML files are allowed.", 400
 
-        # Save the file
+        # Save uploaded file
         save_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(save_path)
 
-        # Parse teachers based on format
+        # Parse teachers based on selected format
         if timetable_format == "asc":
             teachers = parse_asc_teachers(save_path)
         elif timetable_format == "tk":
@@ -39,14 +43,16 @@ def upload_file():
         else:
             return "Invalid format selected.", 400
 
-        # Detect gender for each teacher
+        # Add gender detection for each teacher
         teacher_with_gender = [
             {"name": teacher, "gender": detect_gender(teacher.split()[0])}
             for teacher in teachers
         ]
 
+        # Render results in HTML
         return render_template("upload.html", teachers=teacher_with_gender)
 
+    # Render upload page for GET request
     return render_template("upload.html", teachers=None)
 
 if __name__ == "__main__":
