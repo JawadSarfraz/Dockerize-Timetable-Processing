@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 import os
-from processors.xml_processor import extract_teachers  # Import processing logic
+from processors.asc_parser import parse_asc_teachers  # Parser for ASC timetable
 
 app = Flask(__name__)
 
@@ -12,31 +12,35 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/", methods=["GET", "POST"])
 def upload_file():
+    """
+    Handles file uploads and displays teachers' names with gender.
+    """
     if request.method == "POST":
-        if "file" not in request.files:
-            return "No file part", 400
+        # Get form data
+        timetable_format = request.form.get("format")
+        file = request.files.get("file")
 
-        file = request.files["file"]
-        if file.filename == "":
-            return "No selected file", 400
+        # Validate inputs
+        if not file or not timetable_format:
+            return "Please select a file and format.", 400
+        if not file.filename.endswith(".xml"):
+            return "Only XML files are allowed.", 400
 
-        if file and file.filename.endswith(".xml"):
-            # Save the uploaded file
-            save_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-            file.save(save_path)
+        # Save uploaded file
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file.save(save_path)
 
-            # Process the file to extract teachers
-            teachers = extract_teachers(save_path)
-
-            # Display teachers
-            if teachers:
-                return render_template("upload.html", teachers=teachers)
-            else:
-                return "No teachers found or invalid XML file.", 400
+        # Process teachers for ASC format only (other formats can be added)
+        if timetable_format == "asc":
+            teachers = parse_asc_teachers(save_path)
         else:
-            return "Only XML files are allowed!", 400
+            return "Invalid format selected.", 400
+
+        # Render results in HTML
+        return render_template("upload.html", teachers=teachers)
 
     return render_template("upload.html", teachers=None)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

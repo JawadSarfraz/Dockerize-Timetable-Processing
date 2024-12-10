@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Upload Timetable</title>
+    <title>Upload Timetable XML</title>
   </head>
   <body>
     <h1>Upload Timetable XML</h1>
@@ -9,8 +9,6 @@
       <label for="format">Select Timetable Format:</label>
       <select name="format" id="format" required>
         <option value="asc">ASC Timetable</option>
-        <option value="tk">TK Timetable</option>
-        <option value="untis">Untis Timetable</option>
       </select>
       <br /><br />
       <input type="file" name="file" accept=".xml" required />
@@ -19,14 +17,12 @@
     </form>
 
     {% if teachers %}
-    <h2>Teachers with Gender</h2>
+    <h2>Teachers</h2>
     <ul>
       {% for teacher in teachers %}
-      <li>{{ teacher.name }} - {{ teacher.gender }}</li>
+      <li>{{ teacher.name }} - Gender: {{ teacher.gender }}</li>
       {% endfor %}
     </ul>
-    {% elif teachers is not none %}
-    <p>No teachers found in the file.</p>
     {% endif %}
   </body>
 </html>
