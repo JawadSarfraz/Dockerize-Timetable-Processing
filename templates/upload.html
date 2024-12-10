@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upload Timetable XML</title>
   </head>
   <body>
     <h1>Upload Timetable XML</h1>
-    <form method="post" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
       <label for="format">Select Timetable Format:</label>
-      <select name="format" id="format" required>
+      <select name="format" id="format">
         <option value="asc">ASC Timetable</option>
+        <option value="tk">TK Timetable</option>
+        <option value="untis">Untis Timetable</option>
       </select>
       <br /><br />
-      <input type="file" name="file" accept=".xml" required />
+      <input type="file" name="file" />
       <br /><br />
-      <input type="submit" value="Upload" />
+      <button type="submit">Upload</button>
     </form>
 
     {% if teachers %}
