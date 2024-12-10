@@ -12,7 +12,6 @@ def detect_gender(name):
     if not name:
         return "Unknown"
 
-    # Use the gender-guesser detector to get gender
     result = detector.get_gender(name)
 
     # Map the result to standard gender labels
