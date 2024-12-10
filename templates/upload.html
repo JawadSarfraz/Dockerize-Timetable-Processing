@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Upload XML File</title>
+    <title>Upload Timetable</title>
   </head>
   <body>
-    <h1>Upload XML File</h1>
+    <h1>Upload Timetable XML</h1>
     <form method="post" enctype="multipart/form-data">
-      <input type="file" name="file" accept=".xml" />
+      <label for="format">Select Timetable Format:</label>
+      <select name="format" id="format" required>
+        <option value="asc">ASC Timetable</option>
+        <option value="tk">TK Timetable</option>
+        <option value="untis">Untis Timetable</option>
+      </select>
+      <br /><br />
+      <input type="file" name="file" accept=".xml" required />
       <input type="submit" value="Upload" />
     </form>
 
     {% if teachers %}
-    <h2>Extracted Teachers:</h2>
+    <h2>Teachers with Gender</h2>
     <ul>
       {% for teacher in teachers %}
-      <li>{{ teacher }}</li>
+      <li>{{ teacher.name }} - {{ teacher.gender }}</li>
       {% endfor %}
     </ul>
-    {% elif teachers is not none %}
-    <p>No teachers found in the file.</p>
     {% endif %}
   </body>
 </html>
