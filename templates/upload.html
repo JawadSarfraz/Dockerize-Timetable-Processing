@@ -14,6 +14,7 @@
       </select>
       <br /><br />
       <input type="file" name="file" accept=".xml" required />
+      <br /><br />
       <input type="submit" value="Upload" />
     </form>
 
@@ -24,6 +25,8 @@
       <li>{{ teacher.name }} - {{ teacher.gender }}</li>
       {% endfor %}
     </ul>
+    {% elif teachers is not none %}
+    <p>No teachers found in the file.</p>
     {% endif %}
   </body>
 </html>
