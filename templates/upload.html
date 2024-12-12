@@ -3,30 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Upload Timetable XML</title>
+    <title>Upload Timetable File</title>
   </head>
   <body>
-    <h1>Upload Timetable XML</h1>
-    <form method="POST" enctype="multipart/form-data">
+    <h1>Upload Timetable File</h1>
+    <form method="post" enctype="multipart/form-data">
       <label for="format">Select Timetable Format:</label>
-      <select name="format" id="format">
-        <option value="asc">ASC Timetable</option>
-        <option value="tk">TK Timetable</option>
-        <option value="untis">Untis Timetable</option>
+      <select name="format" id="format" required>
+        <option value="asc">ASC</option>
+        <option value="tk">TK</option>
+        <option value="untis">Untis</option>
       </select>
       <br /><br />
-      <input type="file" name="file" />
+      <label for="file">Choose XML File:</label>
+      <input type="file" name="file" id="file" accept=".xml" required />
       <br /><br />
-      <button type="submit">Upload</button>
+      <input type="submit" value="Upload" />
     </form>
 
     {% if teachers %}
-    <h2>Teachers</h2>
-    <ul>
+    <h2>Uploaded Teachers</h2>
+    <table border="1">
+      <tr>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Reference ID</th>
+      </tr>
       {% for teacher in teachers %}
-      <li>{{ teacher.name }} - Gender: {{ teacher.gender }}</li>
+      <tr>
+        <td>{{ teacher.name }}</td>
+        <td>{{ teacher.gender }}</td>
+        <td>{{ teacher.ref_id }}</td>
+      </tr>
       {% endfor %}
-    </ul>
+    </table>
     {% endif %}
   </body>
 </html>

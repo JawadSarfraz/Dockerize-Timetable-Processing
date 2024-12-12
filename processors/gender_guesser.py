@@ -9,8 +9,8 @@ def detect_gender(name):
     :param name: First name to determine gender
     :return: 'Male', 'Female', or 'Unknown'
     """
-    if not name:
-        return "Unknown"
+    # if not name:
+    #     return "Unknown"
 
     result = detector.get_gender(name)
 
